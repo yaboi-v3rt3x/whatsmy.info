@@ -2,40 +2,78 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>whatsmy.info</title>
+    <title>What's My Information?</title>
   </head>
 
+  <style>
+    body {
+      background-color: powderblue;
+    }
+
+    div {
+      padding: 0.5em;
+      background-color: #fdfdff;
+      border-radius: 0.5em;
+    }
+    
+    h2 {
+        font-family: Comfortaa
+    }
+
+    h3 {
+      background-color: antiquewhite;
+      border-radius: 0.5em;
+      color: black;
+      font-family: Comfortaa;
+      font-size: 20px;
+    }
+  </style>
+
   <body onload = "getLocation()" >
-    <h1 style="font-family: Comfortaa; text-align: center;">Device Information</h1>
+    <div>
+    <h1 align="center" style="font-family: Comfortaa">Device Information</h1>
+    </div>
+    <br>
+    <div>
+    <h2 align="center"><u><b>IP Address</b></u></h2>
+    <h3 align="center" id="ipv4Address">IPv4: Checking...</h3>
+    <h3 align="center" id="ipv6Address">IPv6: Checking...</h3>
 
-    <h2 style="font-family: Comfortaa; text-align: center;"><u><b>IP Address</b></u></h2>
-    <div style="font-family: Comfortaa; text-align: center;"><h3 id="ipAddress"></h3></div>
-
-    <h2 style="font-family: Comfortaa; text-align: center;"><u><b>Device Location</b></u></h2>
-    <div style="font-family: Comfortaa; text-align: center;"><h3 id="deviceLocation"></h3></div>
+    <h2 align="center"><u><b>Device Location</b></u></h2>
+    <h3 align="center" id="Latitude">Latitude: Checking...</h3>
+    <h3 align="center" id="Longitude">Longitude: Checking...</h3>
 
     <h2 style="font-family: Comfortaa; text-align: center;"><u><b>Device Time</b></u></h2>
-    <div style="font-family: Comfortaa; text-align: center;"><h3 id="deviceTime"></h3></div>
+    <h3 align="center" id="deviceTime">Checking...</h3>
+    
+    <h2 align="center" style="font-family: Comfortaa"><u><b>Device Type</b></u></h2>
+    <h3 align="center"id="deviceType">Checking...</h3>
 
-    <h2 style="font-family: Comfortaa; text-align: center;"><u><b>Operating System</b></u></h2>
-    <div style="font-family: Comfortaa; text-align: center;"><h3 id="operatingSystem"></h3></div>
+    <h2 align="center" style="font-family: Comfortaa"><u><b>Operating System</b></u></h2>
+    <h3 align="center" id="operatingSystem"></h3>
 
-    <h2 style="font-family: Comfortaa; text-align: center;"><u><b>Device Type</b></u></h2>
-    <div style="font-family: Comfortaa; text-align: center;"><h3 id="deviceType"></h3></div>
-
-    <h2 style="font-family: Comfortaa; text-align: center;"><u><b>Browser Info</b></u></h2>
-    <div style="font-family: Comfortaa; text-align: center;"><h3 id="browserInfo"></h3></div>
+    <h2 align="center" style="font-family: Comfortaa"><u><b>Browser Info</b></u></h2>
+    <h3 align="center" id="browserInfo"></h3>
+    </div>
     
     <script>
-    // Retrieve and display IP address
+    // Retrieve and display IP address'
       fetch('https://api.ipify.org?format=json')
         .then(response => response.json())
         .then(data => {
-          const ipAddress = data.ip;
-          const ipAddressItem = document.getElementById("ipAddress");
-          ipAddressItem.textContent = ipAddress;
-        })
-
+          const ipv4Address = data.ip;
+          const ipAddressItem = document.getElementById("ipv4Address");
+          ipAddressItem.textContent = "IPv4:" + " " + ipv4Address
+        }) 
+        
+      fetch('https://api64.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+          const ipv6Address = data.ip;
+          const ipAddressItem = document.getElementById("ipv6Address");
+          ipAddressItem.textContent = "IPv6:" + " " + ipv6Address
+        }) 
+        
     // Retrieve and display device location
         function getLocation() {
           if (navigator.geolocation) {
@@ -48,22 +86,15 @@
         function showPosition(position) {
           var latitude = position.coords.latitude;
           var longitude = position.coords.longitude;
-          document.getElementById("deviceLocation").innerHTML = "Latitude: " + latitude + "    Longitude: " + longitude;
+          document.getElementById("Latitude").innerHTML = "Latitude: " + latitude
+          document.getElementById("Longitude").innerHTML = "Longitude: " + longitude
         }
 
     // Retrieve and display device time
       var today = new Date();
       var time = today.toLocaleTimeString();
       document.getElementById("deviceTime").innerHTML = time;
-
-    // Retrieve and display browser information
-      var browserinfo = navigator.userAgent;
-      document.getElementById("browserInfo").innerHTML = browserinfo;
-
-    // Retrieve and display operating system
-      var os = navigator.platform;
-      document.getElementById("operatingSystem").innerHTML = os;
-
+      
     // Retrieve and display device type
     var device = "";
       if (navigator.userAgent.match(/Mobile/i)) {
@@ -71,9 +102,17 @@
       } else if (navigator.userAgent.match(/Tablet/i)) {
         device = "Tablet";
       } else {
-        device = "Desktop";
+        device = "Computer";
       }
       document.getElementById("deviceType").innerHTML = device;
+
+    // Retrieve and display operating system
+      var os = navigator.platform;
+      document.getElementById("operatingSystem").innerHTML = os;
+      
+      // Retrieve and display browser information
+      var browserinfo = navigator.userAgent;
+      document.getElementById("browserInfo").innerHTML = browserinfo;
     </script>
   </body>
 </html>
